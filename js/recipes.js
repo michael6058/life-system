@@ -1,10 +1,19 @@
+let recipes=[];
+
 fetch("data/recipes.json")
 .then(r=>r.json())
 .then(data=>{
 
+recipes=data;
+showRecipes(recipes);
+
+});
+
+function showRecipes(list){
+
 let html="";
 
-data.forEach(r=>{
+list.forEach(r=>{
 
 html+=`
 <h2>${r.name}</h2>
@@ -25,5 +34,23 @@ ${r.steps.map(s=>`<li>${s}</li>`).join("")}
 });
 
 document.getElementById("recipes").innerHTML=html;
+
+}
+
+document.getElementById("search").addEventListener("input",function(){
+
+let keyword=this.value.toLowerCase().trim();
+
+if(keyword===""){
+document.getElementById("recipes").innerHTML="";
+return;
+}
+
+let filtered=recipes.filter(r=>
+r.name.toLowerCase().includes(keyword) ||
+r.ingredients.join("").toLowerCase().includes(keyword)
+);
+
+showRecipes(filtered);
 
 });
