@@ -22,4 +22,10 @@
 "location":"客廳/櫃子",
 "quantity":30
 }
+
+{
+"name":"衛生紙",
+"location":"門口置物櫃/上層",
+"quantity":7
+},
 ]
