@@ -49,15 +49,16 @@ favorite: favorite
 
 const url = `https://api.github.com/repos/${REPO}/contents/${FILE}`;
 
-const res = await fetch(url, {
-headers: {
-Authorization: `Bearer ${TOKEN}`
+let res = await fetch(url,{
+headers:{
+Authorization:`Bearer ${TOKEN}`
 }
 });
 
-console.log(res.status);
+console.log(res);
 
-const data = await res.json();
+let data = await res.json();
+console.log(data);
 
 let base64 = data.content.replace(/\n/g,"");
 let content = JSON.parse(atob(base64));
