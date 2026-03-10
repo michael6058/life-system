@@ -57,7 +57,8 @@ Authorization: `Bearer ${TOKEN}`
 
 const data = await res.json();
 
-let content = JSON.parse(atob(data.content.replace(/\n/g,"")));
+let base64 = data.content.replace(/\n/g,"");
+let content = JSON.parse(atob(base64));
 
 if (!Array.isArray(content)) {
 content = [content];
