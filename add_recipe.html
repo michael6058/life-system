@@ -65,8 +65,6 @@ Authorization:`Bearer ${TOKEN}`
 
 let data=await res.json();
 
-console.log(data);
-
 let content=JSON.parse(atob(data.content));
 
 if(!Array.isArray(content)) content=[content];
@@ -75,7 +73,7 @@ content.push(newRecipe);
 
 let updated=btoa(JSON.stringify(content,null,2));
 
-let result=await fetch(url,{
+await fetch(url,{
 method:"PUT",
 headers:{
 Authorization:`Bearer ${TOKEN}`,
@@ -88,10 +86,6 @@ sha:data.sha
 })
 });
 
-let resultData=await result.json();
-
-console.log(resultData);
-
 document.getElementById("status").innerText="新增成功";
 
 }catch(e){
@@ -103,60 +97,5 @@ alert(e);
 
 }
 
-let name=document.getElementById("name").value;
-
-let ingredients=document
-.getElementById("ingredients")
-.value
-.split("\n")
-.filter(x=>x.trim()!="");
-
-let steps=document
-.getElementById("steps")
-.value
-.split("\n")
-.filter(x=>x.trim()!="");
-
-let favorite=document.getElementById("favorite").checked;
-
-let newRecipe={
-name:name,
-ingredients:ingredients,
-steps:steps,
-favorite:favorite
-};
-
-let url=`https://api.github.com/repos/${REPO}/contents/${FILE}`;
-
-let res=await fetch(url,{
-headers:{Authorization:`token ${TOKEN}`}
-});
-
-let data=await res.json();
-
-let content=JSON.parse(atob(data.content));
-
-if(!Array.isArray(content)) content=[content];
-
-content.push(newRecipe);
-
-let updated=btoa(JSON.stringify(content,null,2));
-
-await fetch(url,{
-method:"PUT",
-headers:{
-Authorization:`token ${TOKEN}`,
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-message:"add recipe",
-content:updated,
-sha:data.sha
-})
-});
-
-document.getElementById("status").innerText="新增成功";
-
-}
-
 </script>
+
