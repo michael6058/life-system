@@ -1,12 +1,14 @@
+[
 {
-"name":"蒜香豆乾",
-"ingredients":[
+"name": "蒜香豆乾",
+"ingredients": [
 "豆乾 300g",
 "蒜頭 4瓣"
 ],
-"steps":[
+"steps": [
 "豆乾燙30秒",
 "蒜頭爆香"
 ],
-"favorite":true
+"favorite": true
 }
+]
