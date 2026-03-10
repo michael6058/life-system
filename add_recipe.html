@@ -55,6 +55,8 @@ Authorization: `Bearer ${TOKEN}`
 }
 });
 
+console.log(res.status);
+
 const data = await res.json();
 
 let base64 = data.content.replace(/\n/g,"");
