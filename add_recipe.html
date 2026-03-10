@@ -15,87 +15,84 @@
 <button onclick="addRecipe()">新增料理</button>
 
 <script>
-function addRecipe(){
-alert("按鈕有作用");
-}
-</script>
 
-<p id="status"></p>
+const TOKEN = "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";
+const REPO = "michael6058/life-system";
+const FILE = "data/recipes.json";
 
-<script>
+async function addRecipe() {
 
-const TOKEN="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";
-const REPO="michael6058/life-system";
-const FILE="data/recipes.json";
+try {
 
-async function addRecipe(){
+const name = document.getElementById("name").value;
 
-try{
-
-let name=document.getElementById("name").value;
-
-let ingredients=document
+const ingredients = document
 .getElementById("ingredients")
 .value
 .split("\n")
-.filter(x=>x.trim()!="");
+.filter(x => x.trim() !== "");
 
-let steps=document
+const steps = document
 .getElementById("steps")
 .value
 .split("\n")
-.filter(x=>x.trim()!="");
+.filter(x => x.trim() !== "");
 
-let favorite=document.getElementById("favorite").checked;
+const favorite = document.getElementById("favorite").checked;
 
-let newRecipe={
-name:name,
-ingredients:ingredients,
-steps:steps,
-favorite:favorite
+const newRecipe = {
+name: name,
+ingredients: ingredients,
+steps: steps,
+favorite: favorite
 };
 
-let url=`https://api.github.com/repos/${REPO}/contents/${FILE}`;
+const url = `https://api.github.com/repos/${REPO}/contents/${FILE}`;
 
-let res=await fetch(url,{
-headers:{
-Authorization:`Bearer ${TOKEN}`
+const res = await fetch(url, {
+headers: {
+Authorization: `Bearer ${TOKEN}`
 }
 });
 
-let data=await res.json();
+const data = await res.json();
 
-let content=JSON.parse(atob(data.content));
+let content = JSON.parse(atob(data.content));
 
-if(!Array.isArray(content)) content=[content];
+if (!Array.isArray(content)) {
+content = [content];
+}
 
 content.push(newRecipe);
 
-let updated=btoa(JSON.stringify(content,null,2));
+const updated = btoa(JSON.stringify(content, null, 2));
 
-await fetch(url,{
-method:"PUT",
-headers:{
-Authorization:`Bearer ${TOKEN}`,
-"Content-Type":"application/json"
+const result = await fetch(url, {
+method: "PUT",
+headers: {
+Authorization: `Bearer ${TOKEN}`,
+"Content-Type": "application/json"
 },
-body:JSON.stringify({
-message:"add recipe",
-content:updated,
-sha:data.sha
+body: JSON.stringify({
+message: "add recipe",
+content: updated,
+sha: data.sha
 })
 });
 
-document.getElementById("status").innerText="新增成功";
+const resultData = await result.json();
 
-}catch(e){
+console.log(resultData);
 
-console.error(e);
-alert(e);
+document.getElementById("status").innerText = "新增成功";
+
+} catch (err) {
+
+console.error(err);
+alert(err);
 
 }
 
 }
 
 </script>
-
