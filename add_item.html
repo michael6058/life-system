@@ -1,0 +1,38 @@
+<h1>新增物品</h1>
+
+名稱<br>
+<input id="name"><br><br>
+
+位置<br>
+<input id="location"><br><br>
+
+數量<br>
+<input id="quantity"><br><br>
+
+<button onclick="generate()">產生資料</button>
+
+<h3>複製下面內容</h3>
+
+<textarea id="output" rows="10" cols="50"></textarea>
+
+<script>
+
+function generate(){
+
+let name=document.getElementById("name").value;
+let location=document.getElementById("location").value;
+let quantity=document.getElementById("quantity").value;
+
+let json=`
+{
+"name":"${name}",
+"location":"${location}",
+"quantity":${quantity}
+},
+`;
+
+document.getElementById("output").value=json;
+
+}
+
+</script>
