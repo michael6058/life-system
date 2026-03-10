@@ -1,0 +1,83 @@
+<h1>新增料理</h1>
+
+料理名稱<br> <input id="name"><br><br>
+
+食材 (每行一個)<br>
+
+<textarea id="ingredients" rows="5"></textarea><br><br>
+
+步驟 (每行一個)<br>
+
+<textarea id="steps" rows="5"></textarea><br><br>
+
+常用料理 <input type="checkbox" id="favorite"><br><br>
+
+<button onclick="addRecipe()">新增料理</button>
+
+<p id="status"></p>
+
+<script>
+
+const TOKEN="你的TOKEN";
+const REPO="michael6058/life-system";
+const FILE="data/recipes.json";
+
+async function addRecipe(){
+
+let name=document.getElementById("name").value;
+
+let ingredients=document
+.getElementById("ingredients")
+.value
+.split("\n")
+.filter(x=>x.trim()!="");
+
+let steps=document
+.getElementById("steps")
+.value
+.split("\n")
+.filter(x=>x.trim()!="");
+
+let favorite=document.getElementById("favorite").checked;
+
+let newRecipe={
+name:name,
+ingredients:ingredients,
+steps:steps,
+favorite:favorite
+};
+
+let url=`https://api.github.com/repos/${REPO}/contents/${FILE}`;
+
+let res=await fetch(url,{
+headers:{Authorization:`token ${TOKEN}`}
+});
+
+let data=await res.json();
+
+let content=JSON.parse(atob(data.content));
+
+if(!Array.isArray(content)) content=[content];
+
+content.push(newRecipe);
+
+let updated=btoa(JSON.stringify(content,null,2));
+
+await fetch(url,{
+method:"PUT",
+headers:{
+Authorization:`token ${TOKEN}`,
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:"add recipe",
+content:updated,
+sha:data.sha
+})
+});
+
+document.getElementById("status").innerText="新增成功";
+
+}
+
+</script>
