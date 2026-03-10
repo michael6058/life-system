@@ -33,10 +33,16 @@ document.getElementById("items").innerHTML=html;
 
 document.getElementById("search").addEventListener("input",function(){
 
-let keyword=this.value.toLowerCase();
+let keyword=this.value.toLowerCase().trim();
+
+if(keyword===""){
+document.getElementById("items").innerHTML="";
+return;
+}
 
 let filtered=items.filter(i=>
-i.name.toLowerCase().includes(keyword)
+i.name.toLowerCase().includes(keyword) ||
+i.location.toLowerCase().includes(keyword)
 );
 
 showItems(filtered);
