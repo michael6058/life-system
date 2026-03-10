@@ -1,10 +1,19 @@
+let items=[];
+
 fetch("data/inventory.json")
 .then(r=>r.json())
 .then(data=>{
 
+items=data;
+showItems(items);
+
+});
+
+function showItems(list){
+
 let html="";
 
-data.forEach(i=>{
+list.forEach(i=>{
 
 html+=`
 <h3>${i.name}</h3>
@@ -19,5 +28,17 @@ html+=`
 });
 
 document.getElementById("items").innerHTML=html;
+
+}
+
+document.getElementById("search").addEventListener("input",function(){
+
+let keyword=this.value.toLowerCase();
+
+let filtered=items.filter(i=>
+i.name.toLowerCase().includes(keyword)
+);
+
+showItems(filtered);
 
 });
